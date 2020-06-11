@@ -22,10 +22,12 @@ RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_LAT
     chmod +x /usr/local/bin/kubectl && \
     wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm && \
     chmod +x /usr/local/bin/helm && \
-    apk add --no-cache docker curl jq make py-pip python-dev libffi-dev openssl-dev gcc libc-dev make && \
-    pip3 install --upgrade pip && \
-    pip3 install cffi && \
-    pip3 install docker-compose
+    apk add --no-cache python3-dev && \
+    apk add --no-cache --virtual .build-deps py-pip libffi-dev openssl-dev gcc libc-dev make && \
+    pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir cffi docker-compose && \
+    apk del .build-deps && \
+    apk add --no-cache docker curl jq
 
 USER jenkins
 

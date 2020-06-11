@@ -1,10 +1,19 @@
 # Set default values for build arguments
 ARG DOCKERFILE_VERSION=1.0.0
 ARG AGENT_VERSION=4.3-4
+# Note: Latest version of kubectl may be found at:
+# https://github.com/kubernetes/kubernetes/releases
+ARG KUBE_VERSION="v1.18.3"
+# Note: Latest version of helm may be found at
+# https://github.com/kubernetes/helm/releases
+ARG HELM_VERSION="v3.2.3"
 
 FROM jenkins/inbound-agent:$AGENT_VERSION-alpine
 
 USER root
+
+ARG KUBE_VERSION
+ARG HELM_VERSION
 
 # Install dependencies as root
 RUN apk add --no-cache python3-dev && \
@@ -13,12 +22,6 @@ RUN apk add --no-cache python3-dev && \
     pip3 install --no-cache-dir docker-compose && \
     apk del .build-deps
 
-# Note: Latest version of kubectl may be found at:
-# https://github.com/kubernetes/kubernetes/releases
-ARG KUBE_VERSION="v1.18.3"
-# Note: Latest version of helm may be found at
-# https://github.com/kubernetes/helm/releases
-ARG HELM_VERSION="v3.2.3"
 RUN wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl && \
     wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm && \

@@ -1,8 +1,8 @@
 # Set default values for build arguments
 ARG DOCKERFILE_VERSION=1.0.0
-ARG JNLP_VERSION=4.3-4
+ARG AGENT_VERSION=4.3-4
 
-FROM jenkins/jnlp-slave:$JNLP_VERSION-alpine
+FROM jenkins/inbound-agent:$AGENT_VERSION-alpine
 
 USER root
 
